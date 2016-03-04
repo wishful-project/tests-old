@@ -27,7 +27,7 @@ class LocalTestCaseLinux(unittest.TestCase):
         logging.basicConfig(level=log_level,
             format='%(asctime)s - %(name)s.%(funcName)s() - %(levelname)s - %(message)s')
 
-        config_file_path = 'config1.yaml'
+        config_file_path = './config1.yaml'
         config = None
         with open(config_file_path, 'r') as f:
             config = yaml.load(f)
@@ -45,8 +45,8 @@ class LocalTestCaseLinux(unittest.TestCase):
     """
     def test_get_hw_addr(self):
 
-        iface = 'eno16777736'
-        hw_addr = self.controller.net.get_iface_hw_addr(iface)
+        iface = 'eth0'
+        hw_addr = self.controller.blocking(True).net.get_iface_hw_addr(iface)
         self.log.info('Hw address of %s is %s' % (iface, hw_addr))
 
         #self.assertIsNotNone(rvalue, 'MAC address is empty')

@@ -6,11 +6,14 @@ agent_info:
   iface: 'lo'
 
 modules:
-
   simple:
       module : wishful_module_wifi
       class_name : WifiModule
-      interfaces : ['lo' 'eno16777736']
+      interfaces : ['lo', 'eno16777736']
+
+  network:
+      module : wishful_module_wifi
+      class_name : NetworkModule
 
   iperf:
       module : wishful_module_iperf
