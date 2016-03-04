@@ -35,12 +35,12 @@ def main():
         print we
 
     try:
-        raise exceptions.SchedulingFunctionCallsInThePastException(func_name='radio.get_rssi')
+        raise exceptions.SchedulingFunctionCallsInThePastException(func_name='radio.get_noise')
     except exceptions.WishfulException as we:
         print we
 
     try:
-        raise exceptions.UPIFunctionExecutionFailedException(func_name='radio.get_rssi', err_msg='wrong iw version')
+        raise exceptions.UPIFunctionExecutionFailedException(func_name='radio.get_noise', err_msg='wrong iw version')
     except exceptions.WishfulException as we:
         print we
 
