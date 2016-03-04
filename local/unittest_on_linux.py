@@ -40,16 +40,22 @@ class LocalTestCaseLinux(unittest.TestCase):
         self.agent.stop()
         self.log.info('Unittest stopped.')
 
-    """
-    Test simple UPI calls
-    """
     def test_get_hw_addr(self):
 
-        iface = 'eth0'
+        iface = 'lo'
         hw_addr = self.controller.blocking(True).net.get_iface_hw_addr(iface)
         self.log.info('Hw address of %s is %s' % (iface, hw_addr))
 
-        #self.assertIsNotNone(rvalue, 'MAC address is empty')
+        self.assertEquals(hw_addr, '00:00:00:00:00:00')
+
+    def test_get_iface_ip_addr(self):
+
+        iface = 'lo'
+        hw_addr = self.controller.blocking(True).net.get_iface_ip_addr(iface)
+        self.log.info('IP address of %s is %s' % (iface, hw_addr))
+
+        self.assertEquals(hw_addr, '127.0.0.1')
+
 
 
 if __name__ == '__main__':
