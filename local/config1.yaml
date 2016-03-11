@@ -12,7 +12,7 @@ modules:
       interfaces : ['lo', 'eno16777736']
 
   network:
-      module : wishful_module_wifi
+      module : wishful_module_net_linux
       class_name : NetworkModule
 
   iperf:
