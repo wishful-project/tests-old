@@ -2,15 +2,10 @@
 
 agent_info:
   name: 'unit_test'
-  info: 'testing modules using local controller'
+  info: 'testing net module using local controller'
   iface: 'lo'
 
 modules:
-  simple:
-      module : wishful_module_wifi
-      class_name : WifiModule
-      interfaces : ['lo', 'eno16777736']
-
   network:
       module : wishful_module_net_linux
       class_name : NetworkModule
