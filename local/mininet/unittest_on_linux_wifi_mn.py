@@ -20,6 +20,8 @@ __copyright__ = "Copyright (c) 2016, Technische Universität Berlin"
 __version__ = "0.1.0"
 __email__ = "{zubow}@tkn.tu-berlin.de"
 
+# enable mininet cli
+MN_CLI = False
 # enable GUI
 GUI = False
 # enable mobility
@@ -57,14 +59,21 @@ def topology():
     folder = './'
 
     print "*** local controller ..."
-    wf_ctrl = WishfulController(ap1, folder + 'wishful_simple_local_controller', folder + 'config.yaml')
+    wf_ctrl = WishfulController(ap1, folder + 'unittest_on_linux_wifi_wishful_local_controller', folder + 'unittest_on_linux_wifi_config.yaml')
     wf_ctrl.start()
 
     print "*** Starting network"
     sta1.cmd('ping -c5 %s' % sta2.IP())
 
-    #print "*** Running CLI"
-    #CLI( net )
+    print "*** Check that Wishful agents/controllers are still running ..."
+    if not wf_ctrl.check_is_running():
+        raise Exception("Error; wishful controller not running; check logfile: " + wf_ctrl.logfile)
+    else:
+        print "*** Wishful agents/controllers: OK"
+
+    if MN_CLI:
+        print "*** Running CLI"
+        CLI( net )
 
     print "*** Stopping network"
     wf_ctrl.stop()

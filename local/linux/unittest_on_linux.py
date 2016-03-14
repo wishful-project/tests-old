@@ -27,7 +27,7 @@ class LocalTestCaseLinux(unittest.TestCase):
         logging.basicConfig(level=log_level,
             format='%(asctime)s - %(name)s.%(funcName)s() - %(levelname)s - %(message)s')
 
-        config_file_path = './config1.yaml'
+        config_file_path = './unittest_on_linux_config.yaml'
         config = None
         with open(config_file_path, 'r') as f:
             config = yaml.load(f)

@@ -56,28 +56,29 @@ def main(args):
     agent.run()
 
     wface = 'ap1-wlan0'
-    #control loop
+
+    blocking_call = True
     while True:
 
-        controller.blocking(False).net.iface(wface).get_inactivity_time_of_connected_devices()
-        controller.blocking(False).net.iface(wface).get_avg_sigpower_of_connected_devices()
-        controller.blocking(False).net.iface(wface).get_sigpower_of_connected_devices()
-        controller.blocking(False).net.iface(wface).get_tx_retries_of_connected_devices()
-        controller.blocking(False).net.iface(wface).get_tx_packets_of_connected_devices()
-        controller.blocking(False).net.iface(wface).get_tx_failed_of_connected_devices()
-        controller.blocking(False).net.iface(wface).get_tx_bytes_of_connected_devices()
-        controller.blocking(False).net.iface(wface).get_tx_bitrate_of_connected_devices()
-        controller.blocking(False).net.iface(wface).get_rx_bytes_of_connected_devices()
-        controller.blocking(False).net.iface(wface).get_rx_packets_of_connected_devices()
-        controller.blocking(False).net.iface(wface).get_authorized_connected_device()
-        controller.blocking(False).net.iface(wface).get_authenticated_connected_device()
-        controller.blocking(False).net.iface(wface).get_used_preamble_connected_device()
-        controller.blocking(False).net.iface(wface).get_mfp_connected_device()
-        controller.blocking(False).net.iface(wface).get_wmm_wme_connected_device()
-        controller.blocking(False).net.iface(wface).get_tdls_peer_connected_device()
+        controller.blocking(blocking_call).net.iface(wface).get_inactivity_time_of_connected_devices()
+        controller.blocking(blocking_call).net.iface(wface).get_avg_sigpower_of_connected_devices()
+        controller.blocking(blocking_call).net.iface(wface).get_sigpower_of_connected_devices()
+        controller.blocking(blocking_call).net.iface(wface).get_tx_retries_of_connected_devices()
+        controller.blocking(blocking_call).net.iface(wface).get_tx_packets_of_connected_devices()
+        controller.blocking(blocking_call).net.iface(wface).get_tx_failed_of_connected_devices()
+        controller.blocking(blocking_call).net.iface(wface).get_tx_bytes_of_connected_devices()
+        controller.blocking(blocking_call).net.iface(wface).get_tx_bitrate_of_connected_devices()
+        controller.blocking(blocking_call).net.iface(wface).get_rx_bytes_of_connected_devices()
+        controller.blocking(blocking_call).net.iface(wface).get_rx_packets_of_connected_devices()
+        controller.blocking(blocking_call).net.iface(wface).get_authorized_connected_device()
+        controller.blocking(blocking_call).net.iface(wface).get_authenticated_connected_device()
+        controller.blocking(blocking_call).net.iface(wface).get_used_preamble_connected_device()
+        controller.blocking(blocking_call).net.iface(wface).get_mfp_connected_device()
+        controller.blocking(blocking_call).net.iface(wface).get_wmm_wme_connected_device()
+        controller.blocking(blocking_call).net.iface(wface).get_tdls_peer_connected_device()
 
         time.sleep(1)
-
+        blocking_call = False
 
 if __name__ == "__main__":
     try:

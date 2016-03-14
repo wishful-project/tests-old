@@ -1,10 +1,10 @@
 #!/bin/bash
 
-cd ./local/ ; ./run_unittests.sh ; cd ..
+cd ./local/linux/ ; ./run_unittest_on_linux.sh ; cd ../..
 
 
 if which mn >/dev/null; then
-    cd ./mininet/ ; ./run_unittests.sh ; cd ..
+    cd ./local/mininet/ ; ./run_unittest_on_linux_wifi.sh ; cd ../..
 else
     echo "no mininet installed; skip test"
 fi
