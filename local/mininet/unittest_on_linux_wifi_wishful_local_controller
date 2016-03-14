@@ -2,17 +2,17 @@
 # -*- coding: utf-8 -*-
 
 """
-wishful_simple_local_controller.py: First implementation of WiSHFUL controller
+unittest_on_linux_wifi_wishful_local_controller.py: First implementation of WiSHFUL controller
 
 Usage:
-   wishful_simple_local_controller.py [options] [-q | -v]
+   unittest_on_linux_wifi_wishful_local_controller.py [options] [-q | -v]
 
 Options:
    --logfile name      Name of the logfile
    --config configFile Config file path
 
 Example:
-   ./wishful_simple_local_controller -v --config ./config.yaml 
+   ./unittest_on_linux_wifi_wishful_local_controller -v --config ./config.yaml
 
 Other options:
    -h, --help          show this help message and exit
@@ -28,11 +28,13 @@ import wishful_agent
 import time
 import yaml
 import wishful_upis as upis
+from wishful_framework import TimeEvent, PktEvent, MovAvgFilter, PeakDetector, Match, Action, Permanance, PktMatch, FieldSelector
 
-__author__ = "Piotr Gawlowicz"
-__copyright__ = "Copyright (c) 2015, Technische Universität Berlin"
+
+__author__ = "Zubow"
+__copyright__ = "Copyright (c) 2016, Technische Universität Berlin"
 __version__ = "0.1.0"
-__email__ = "gawlowicz@tkn.tu-berlin.de"
+__email__ = "zubow@tkn.tu-berlin.de"
 
 
 log = logging.getLogger('wishful_agent.main')
@@ -44,8 +46,14 @@ def default_callback(cmd, data):
     log.info("{} DEFAULT CALLBACK : Cmd: {}, Returns: {}".format(datetime.datetime.now(), cmd, data))
 
 
+def pkt_based_rule_matched(ruleId, data):
+    log.info("{} Pkt Rule with id: {} was matched; Data: {}".format(datetime.datetime.now(), ruleId, data))
+
+
 def main(args):
     log.debug(args)
+
+    log.info('--- main ---')
 
     config_file_path = args['--config']
     config = None
@@ -57,9 +65,9 @@ def main(args):
 
     wface = 'ap1-wlan0'
 
-    blocking_call = True
-    while True:
-
+    log.info('--- 1. test ---')
+    ''' 1. Test some basic 802.11 monitoring functionality '''
+    for blocking_call in [True, False]:
         controller.blocking(blocking_call).net.iface(wface).get_inactivity_time_of_connected_devices()
         controller.blocking(blocking_call).net.iface(wface).get_avg_sigpower_of_connected_devices()
         controller.blocking(blocking_call).net.iface(wface).get_sigpower_of_connected_devices()
@@ -77,8 +85,24 @@ def main(args):
         controller.blocking(blocking_call).net.iface(wface).get_wmm_wme_connected_device()
         controller.blocking(blocking_call).net.iface(wface).get_tdls_peer_connected_device()
 
-        time.sleep(1)
-        blocking_call = False
+    log.info('--- 2. test ---')
+    ''' 2. rule-based matching '''
+    if False:
+        log.info("{} Installing new packet based rule".format(datetime.datetime.now()))
+        ruleDesc = controller.rule.add(event=PktEvent(iface="mon0"),
+                                       pktMatch=PktMatch("icmp"),
+                                       selector=FieldSelector("Radiotap.rssi"),
+                                       filters=[MovAvgFilter(10), ],
+                                       match=Match("<", 10),
+                                       action=Action(upis.radio.set_channel, iface="wlan0", kwargs={"channel":8}),
+                                       permanence=Permanance.PERSISTENT,
+                                       ctrl_callback=pkt_based_rule_matched)
+
+        log.info("{} New rule with ID: {} was added".format(datetime.datetime.now(), ruleDesc.id))
+        time.sleep(20)
+
+        retVal = ruleDesc.remove()
+
 
 if __name__ == "__main__":
     try:
@@ -111,6 +135,8 @@ if __name__ == "__main__":
         main(args)
     except KeyboardInterrupt:
         log.debug("Controller exits")
+    except Exception as ex:
+        log.fatal(ex)
     finally:
         log.debug("Exit")
         agent.stop()
