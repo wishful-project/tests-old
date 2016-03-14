@@ -21,7 +21,7 @@ __version__ = "0.1.0"
 __email__ = "{zubow}@tkn.tu-berlin.de"
 
 # enable mininet cli
-MN_CLI = False
+MN_CLI = True
 # enable GUI
 GUI = False
 # enable mobility
@@ -54,6 +54,9 @@ def topology():
 
     "Configure IP addresses on APs for binding Wishful agent"
     ap1.cmd('ifconfig ap1-eth1 20.0.0.2/8')
+    "Setup monitor interface ..."
+    ap1.cmd('iw phy phy80 create interface mon0 type monitor')
+    ap1.cmd('ifconfig mon0 up')
 
     print "*** Starting Wishful framework"
     folder = './'
@@ -67,7 +70,12 @@ def topology():
 
     print "*** Check that Wishful agents/controllers are still running ..."
     if not wf_ctrl.check_is_running():
+        print '*****'
+        print wf_ctrl.read_log_file()
+        print '*****'
+
         raise Exception("Error; wishful controller not running; check logfile: " + wf_ctrl.logfile)
+
     else:
         print "*** Wishful agents/controllers: OK"
 

@@ -9,6 +9,7 @@ import wishful_agent
 import time
 import yaml
 import wishful_upis as upis
+from wishful_framework import TimeEvent, PktEvent, MovAvgFilter, PeakDetector, Match, Action, Permanance, PktMatch, FieldSelector
 
 """
 Unittest using local controller framework.
@@ -35,10 +36,12 @@ class LocalTestCaseLinux(unittest.TestCase):
         self.agent.load_config(config)
         self.agent.run()
 
+
     @classmethod
     def tearDownClass(self):
         self.agent.stop()
         self.log.info('Unittest stopped.')
+
 
     def test_get_hw_addr(self):
 
@@ -48,6 +51,7 @@ class LocalTestCaseLinux(unittest.TestCase):
 
         self.assertEquals(hw_addr, '00:00:00:00:00:00')
 
+
     def test_get_iface_ip_addr(self):
 
         iface = 'lo'
@@ -55,8 +59,6 @@ class LocalTestCaseLinux(unittest.TestCase):
         self.log.info('IP address of %s is %s' % (iface, hw_addr))
 
         self.assertEquals(hw_addr, '127.0.0.1')
-
-
 
 if __name__ == '__main__':
 
