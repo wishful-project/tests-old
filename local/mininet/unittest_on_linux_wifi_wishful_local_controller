@@ -29,7 +29,7 @@ import time
 import yaml
 import wishful_upis as upis
 from wishful_framework import TimeEvent, PktEvent, MovAvgFilter, PeakDetector, Match, Action, Permanance, PktMatch, FieldSelector
-
+from sets import Set
 
 __author__ = "Zubow"
 __copyright__ = "Copyright (c) 2016, Technische Universität Berlin"
@@ -41,6 +41,10 @@ log = logging.getLogger('wishful_agent.main')
 agent = wishful_agent.Agent(local=True)
 controller = agent.get_local_controller()
 
+# storing all dot11 source addresses (client MAC addresses)
+sta_mac_addr_set = Set()
+
+
 @controller.set_default_callback()
 def default_callback(cmd, data):
     log.info("{} DEFAULT CALLBACK : Cmd: {}, Returns: {}".format(datetime.datetime.now(), cmd, data))
@@ -49,6 +53,22 @@ def default_callback(cmd, data):
 def pkt_based_rule_matched(ruleId, data):
     log.info("{} Pkt Rule with id: {} was matched; Data: {}".format(datetime.datetime.now(), ruleId, data))
 
+
+def dot11_src_based_rule_matched(ruleId, sta_mac_addr):
+    log.info("{} Dot11 source rule with id: {} was matched; Data: {}".format(datetime.datetime.now(), ruleId, sta_mac_addr))
+    if sta_mac_addr in sta_mac_addr_set:
+        # already known client sta
+        pass
+    else:
+        sta_mac_addr_set.add(sta_mac_addr)
+        log.info('Add new rule')
+
+        ruleDesc = controller.rule.add(event=PktEvent(iface='mon0'),
+                                       selector=FieldSelector("Dot11.addr2 == " + sta_mac_addr),
+                                       filters=[MovAvgFilter(10), ],
+                                       permanence=Permanance.PERSISTENT,
+                                       ctrl_callback=pkt_based_rule_matched)
+        ruleDesc.id
 
 def main(args):
     log.debug(args)
@@ -88,21 +108,16 @@ def main(args):
 
             time.sleep(1)
 
-    log.info('--- 2. test ---')
-    ''' 2. rule-based matching '''
-
     if True:
-        log.info("{} Installing new packet based rule".format(datetime.datetime.now()))
-        ruleDesc = controller.rule.add(event=PktEvent(iface='mon0'),
-                                       #pktMatch=PktMatch(""),
-                                       selector=FieldSelector("RadioTap.rate"),
-                                       #filters=[MovAvgFilter(10), ],
-                                       #match=Match("<", 10),
-                                       #action=Action(upis.radio.set_power, iface=wface, kwargs={"power":10}),
-                                       permanence=Permanance.PERSISTENT,
-                                       ctrl_callback=pkt_based_rule_matched)
+        log.info('--- 2. test ---')
+        ''' 2. rule-based matching '''
 
-        log.info("{} New rule with ID: {} was added".format(datetime.datetime.now(), ruleDesc.id))
+        ruleDesc = controller.rule.add(event=PktEvent(iface='mon0'),
+                                       selector=FieldSelector("Dot11.addr2"),
+                                       permanence=Permanance.PERSISTENT,
+                                       ctrl_callback=dot11_src_based_rule_matched)
+
+        log.info("{} Dot11 source address learning rule with ID: {} was added".format(datetime.datetime.now(), ruleDesc.id))
 
     while True:
         time.sleep(1)
