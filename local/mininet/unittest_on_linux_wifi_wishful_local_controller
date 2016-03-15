@@ -90,7 +90,10 @@ def main(args):
 
     log.info('--- 2. test ---')
     ''' 2. rule-based matching '''
-    if True:
+
+    log.info('--- 2. test ---')
+    ''' 2. rule-based matching '''
+    if False:
         log.info("{} Installing new packet based rule".format(datetime.datetime.now()))
         ruleDesc = controller.rule.add(event=PktEvent(iface="mon0"),
                                        pktMatch=PktMatch("icmp"),

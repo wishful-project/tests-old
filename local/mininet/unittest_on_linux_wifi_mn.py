@@ -55,7 +55,6 @@ def topology():
     "Configure IP addresses on APs for binding Wishful agent"
     ap1.cmd('ifconfig ap1-eth1 20.0.0.2/8')
     "Setup monitor interface ..."
-
     ap1.cmd('./cfg_mon.sh')
     ap1.cmd('ifconfig mon0 up')
 
