@@ -21,7 +21,7 @@ __version__ = "0.1.0"
 __email__ = "{zubow}@tkn.tu-berlin.de"
 
 # enable mininet cli
-MN_CLI = True
+MN_CLI = False
 # enable GUI
 GUI = False
 # enable mobility
@@ -66,7 +66,7 @@ def topology():
     wf_ctrl.start()
 
     print "*** Starting network"
-    #sta1.cmd('ping -c5 %s' % sta2.IP())
+    sta1.cmd('ping -c10 %s' % sta2.IP())
 
     print "*** Check that Wishful agents/controllers are still running ..."
     if not wf_ctrl.check_is_running():

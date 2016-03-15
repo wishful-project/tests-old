@@ -58,6 +58,7 @@ def new_node_cb(node):
         node1_iface = 'ap2-wlan0'
 
     log.info("New node appeared: {}".format(node.name))
+    log.info(node)
 
 @controller.node_exit_callback()
 def node_exit_cb(node, reason):
