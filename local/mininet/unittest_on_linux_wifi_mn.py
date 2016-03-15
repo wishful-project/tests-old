@@ -66,7 +66,7 @@ def topology():
     wf_ctrl.start()
 
     print "*** Starting network"
-    sta1.cmd('ping -c5 %s' % sta2.IP())
+    #sta1.cmd('ping -c5 %s' % sta2.IP())
 
     print "*** Check that Wishful agents/controllers are still running ..."
     if not wf_ctrl.check_is_running():

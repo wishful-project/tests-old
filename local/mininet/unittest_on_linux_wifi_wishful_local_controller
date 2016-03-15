@@ -91,23 +91,23 @@ def main(args):
     log.info('--- 2. test ---')
     ''' 2. rule-based matching '''
 
-    log.info('--- 2. test ---')
-    ''' 2. rule-based matching '''
-    if False:
+    if True:
         log.info("{} Installing new packet based rule".format(datetime.datetime.now()))
-        ruleDesc = controller.rule.add(event=PktEvent(iface="mon0"),
-                                       pktMatch=PktMatch("icmp"),
-                                       selector=FieldSelector("Radiotap.rssi"),
-                                       filters=[MovAvgFilter(10), ],
-                                       match=Match("<", 10),
-                                       action=Action(upis.radio.set_power, iface=wface, kwargs={"power":10}),
+        ruleDesc = controller.rule.add(event=PktEvent(iface='mon0'),
+                                       #pktMatch=PktMatch(""),
+                                       selector=FieldSelector("RadioTap.rate"),
+                                       #filters=[MovAvgFilter(10), ],
+                                       #match=Match("<", 10),
+                                       #action=Action(upis.radio.set_power, iface=wface, kwargs={"power":10}),
                                        permanence=Permanance.PERSISTENT,
                                        ctrl_callback=pkt_based_rule_matched)
 
         log.info("{} New rule with ID: {} was added".format(datetime.datetime.now(), ruleDesc.id))
-        time.sleep(20)
 
-        retVal = ruleDesc.remove()
+    while True:
+        time.sleep(1)
+
+    retVal = ruleDesc.remove()
 
 
 if __name__ == "__main__":
