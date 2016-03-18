@@ -2,7 +2,7 @@
 
 echo "Test local controller:"
 
-python unittest_on_linux.py
+python3 unittest_on_linux.py
 
 if [ "$?" != "0" ]; then
   echo "Unittest failed !!!!"

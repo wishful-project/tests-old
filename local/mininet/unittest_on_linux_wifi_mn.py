@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -37,17 +37,17 @@ def topology():
     "Create a network."
     net = Mininet( controller=Controller, link=TCLink, switch=OVSKernelSwitch )
 
-    print "*** Creating nodes"
+    print("*** Creating nodes")
     sta1 = net.addStation( 'sta1', mac='00:00:00:00:00:02', ip='10.0.0.2/8' )
     sta2 = net.addStation( 'sta2', mac='00:00:00:00:00:03', ip='10.0.0.3/8' )
     ap1 = net.addBaseStation( 'ap1', ssid= 'new-ssid1', mode= 'g', channel= '1', position='15,50,0' )
     c1 = net.addController( 'c1', controller=Controller )
 
-    print "*** Creating links"
+    print("*** Creating links")
     net.addLink(ap1, sta1)
     net.addLink(ap1, sta2)
 
-    print "*** Starting network"
+    print("*** Starting network")
     net.build()
     c1.start()
     ap1.start( [c1] )
@@ -58,32 +58,32 @@ def topology():
     ap1.cmd('./cfg_mon.sh')
     ap1.cmd('ifconfig mon0 up')
 
-    print "*** Starting Wishful framework"
+    print("*** Starting Wishful framework")
     folder = './'
 
-    print "*** local controller ..."
+    print("*** local controller ...")
     wf_ctrl = WishfulController(ap1, folder + 'unittest_on_linux_wifi_wishful_local_controller', folder + 'unittest_on_linux_wifi_config.yaml')
     wf_ctrl.start()
 
-    print "*** Starting network"
+    print("*** Starting network")
     sta1.cmd('ping -c10 %s' % sta2.IP())
 
-    print "*** Check that Wishful agents/controllers are still running ..."
+    print("*** Check that Wishful agents/controllers are still running ...")
     if not wf_ctrl.check_is_running():
-        print '*****'
-        print wf_ctrl.read_log_file()
-        print '*****'
+        print('*****')
+        print(wf_ctrl.read_log_file())
+        print('*****')
 
         raise Exception("Error; wishful controller not running; check logfile: " + wf_ctrl.logfile)
 
     else:
-        print "*** Wishful agents/controllers: OK"
+        print("*** Wishful agents/controllers: OK")
 
     if MN_CLI:
-        print "*** Running CLI"
+        print("*** Running CLI")
         CLI( net )
 
-    print "*** Stopping network"
+    print("*** Stopping network")
     wf_ctrl.stop()
     net.stop()
 

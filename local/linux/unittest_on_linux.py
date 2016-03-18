@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import unittest
@@ -47,9 +47,9 @@ class LocalTestCaseLinux(unittest.TestCase):
 
         iface = 'lo'
         hw_addr = self.controller.blocking(True).net.get_iface_hw_addr(iface)
-        self.log.info('Hw address of %s is %s' % (iface, hw_addr))
+        self.log.info('Hw address of {} is {}'.format(iface, str(hw_addr)))
 
-        self.assertEquals(hw_addr, '00:00:00:00:00:00')
+        self.assertEqual(str(hw_addr), '00:00:00:00:00:00')
 
 
     def test_get_iface_ip_addr(self):
@@ -58,7 +58,7 @@ class LocalTestCaseLinux(unittest.TestCase):
         hw_addr = self.controller.blocking(True).net.get_iface_ip_addr(iface)
         self.log.info('IP address of %s is %s' % (iface, hw_addr))
 
-        self.assertEquals(hw_addr, '127.0.0.1')
+        self.assertEqual(str(hw_addr), '127.0.0.1')
 
 if __name__ == '__main__':
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -22,27 +22,27 @@ def main():
     try:
         raise exceptions.AgentNotAvailable(id='123')
     except exceptions.WishfulException as we:
-        print we
+        print(we)
 
     try:
         raise exceptions.InvalidArgumentException(func_name='radio.get_noise')
     except exceptions.WishfulException as we:
-        print we
+        print(we)
 
     try:
         raise exceptions.UnsupportedUPIFunctionException(func_name='radio.get_noise', conn_module='wifi_ath9k')
     except exceptions.WishfulException as we:
-        print we
+        print(we)
 
     try:
         raise exceptions.SchedulingFunctionCallsInThePastException(func_name='radio.get_noise')
     except exceptions.WishfulException as we:
-        print we
+        print(we)
 
     try:
         raise exceptions.UPIFunctionExecutionFailedException(func_name='radio.get_noise', err_msg='wrong iw version')
     except exceptions.WishfulException as we:
-        print we
+        print(we)
 
 
 if __name__ == "__main__":
