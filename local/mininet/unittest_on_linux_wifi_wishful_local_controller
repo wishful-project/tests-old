@@ -29,7 +29,6 @@ import time
 import yaml
 import wishful_upis as upis
 from wishful_framework import TimeEvent, PktEvent, MovAvgFilter, PeakDetector, Match, Action, Permanance, PktMatch, FieldSelector
-from sets import Set
 from scapy.all import *
 
 __author__ = "Zubow"
@@ -43,7 +42,7 @@ agent = wishful_agent.Agent(local=True)
 controller = agent.get_local_controller()
 
 # storing all dot11 source addresses (client MAC addresses)
-sta_mac_addr_set = Set()
+sta_mac_addr_set = set()
 rule_mac_addr_tbl = {}
 
 @controller.set_default_callback()
